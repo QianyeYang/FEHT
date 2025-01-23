@@ -1,0 +1,1 @@
+This folder save the logs and checkpoints from training and inference

@@ -1,0 +1,42 @@
+[project]
+name = "feht"
+version = "0.1.0"
+description = "Fetal Echocardiography Heart Tracking"
+readme = "README.md"
+license = { file = "LICENSE" }  # Specify your license here
+requires-python = ">=3.12"
+authors = [
+    { name = "xxx", email = "xxxxx" },
+]
+dependencies = [
+    "icecream==2.1.3",
+    "pandas==2.1.3",
+    "numpy==1.26.2",
+    "matplotlib==3.7.1",
+    "loguru==0.7.2",
+    "shapely==2.0.2",
+    "opencv-python",
+    "ipython",
+    "datetime",
+    "tqdm",
+    "pyyaml",
+    "openpyxl",
+]
+
+[tool.setuptools.packages.find]
+include = ["feht"]
+exclude = ["contrib", "docs", "test", "Tools"]
+
+[build-system]
+requires = ["setuptools>=64.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project.urls]
+homepage = "https://github.com/xxxx"
+bug-reports = "https://github.com/xxxx/issues"
+source = "https://github.com/xxxx/issues"
+
+[project.scripts]
+feht-update = "feht.cli.updateSoftware:main"
+feht-train = "feht.cli.updateSoftware:main"
+feht-inference = "feht.cli.updateSoftware:main"

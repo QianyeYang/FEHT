@@ -1,0 +1,33 @@
+# General training hyperparameters
+arch: !!seq
+  - !!str "heartDetector"
+  - !!str "HeartDetector"
+lr: !!float 1e-4
+lr_scheduler: !!str "linear"
+batch_size: !!int 32
+num_epochs: !!int 2000
+num_cpus: !!int 4
+gpu_ids: !!seq
+  - !!int 1
+save_frequency: !!int 100
+val_warmup: !!int 400
+bbox_index_path: "./data/detection_meta.pkl"
+data_root: !!str "../DataSets/COCHE_site12_Bmode_videos"
+overwrite: !!bool False
+
+# Continue training proposes
+continue_train: !!bool False
+break_point: latest
+
+# Define task specific hyperparameters
+clip_length: !!int 64
+input_shape: !!seq
+  - !!int 112
+  - !!int 112
+in_channels: 1
+use_privileged_label: !!bool False
+w_mse : !!float 500.0
+w_l2reg: !!float 800.0
+w_ce: !!seq
+  - !!float 0.89  # No heart
+  - !!float 0.11    # heart 
