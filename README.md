@@ -80,12 +80,8 @@ The tool supports multiple ways for doing inference, depends on the usage of thi
 * Inference via an index file (CSV):
 ```
 ```
-* Inference via a folder path:
-```
-```
-* Integrate the inference in your code:
-```
-```
+* Integrate the inference in your code: Please check the example in [here](feht/examples/model_instance.ipynb).
+
 ## Software Update
 This tool will be regularly maintained and updated. You can always using the following command line to update the software:
 ```

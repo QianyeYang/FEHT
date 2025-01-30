@@ -1,12 +1,31 @@
-import os, json
+import os, json, yaml
 import pickle as pkl
 import pandas as pd
-import yaml
+import feht.utils.io as uio
 
 
 DIR_PROJECT:str = os.path.dirname(os.path.dirname(__file__))
+DIR_PACKAGE:str = os.path.dirname(__file__)
+DIR_PRETRAINED_MODEL:str = os.path.join(DIR_PACKAGE, 'weights')
 
 
+def Model(name: str = 'feht-l2-pretrained'):
+    import torch
+    from feht.model.video import R3D18_WEFLP
+    model_path = os.path.join(DIR_PRETRAINED_MODEL, f'{name}.pt')
+
+    assert os.path.isfile(model_path), \
+        f"Model {name} not found! Please check if you placed it under feht/weights folder."
+    
+        
+    model = R3D18_WEFLP(num_out=6)
+    state_dict = uio.load_checkpoint(model_path, map_location=torch.device('cpu'))
+    model.load_state_dict(state_dict['model_state_dict'])
+    model.eval()
+
+    return model
+        
+        
 def save_json(
         data: dict, 
         path: str, 

@@ -84,7 +84,7 @@ class R3D18_WEFLP(nn.Module):
     '''
     def __init__(self, num_out: int):
         super(R3D18_WEFLP, self).__init__()
-        self.model = r3d_18(pretrained=False)
+        self.model = r3d_18(weights=None)
         
         self.model.stem[0] = nn.Conv3d(
             in_channels=1,
@@ -148,7 +148,7 @@ class R2D18_WEFLP(nn.Module):
     def __init__(self, channel_in: int, num_out: int):
         super(R2D18_WEFLP, self).__init__()
 
-        self.model = resnet18(pretrained=False)
+        self.model = resnet18(weights=None)
         self.model.conv1 = nn.Conv2d(
             in_channels=channel_in, 
             out_channels=64, 

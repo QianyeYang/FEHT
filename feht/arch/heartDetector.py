@@ -395,13 +395,10 @@ class HeartDetector(BaseArch):
                 centers[vlength-clength:vlength] += output_dict['pred_center'].detach().cpu().squeeze().numpy()
                 radius[vlength-clength:vlength] += output_dict['pred_radius'].detach().cpu().squeeze().numpy()
 
-            # print(f"counts: {counts}")
-            # print(f"before devide: {radius}")
             counts = np.expand_dims(counts, axis=1)
             logits = logits / counts
             centers = centers / counts
             radius = radius / counts
-            # print(f"after devide: {radius}")
 
 
             all_prediction_logits.append(logits)
