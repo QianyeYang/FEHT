@@ -4,6 +4,9 @@ import pandas as pd
 import yaml
 
 
+DIR_PROJECT:str = os.path.dirname(os.path.dirname(__file__))
+
+
 def save_json(
         data: dict, 
         path: str, 

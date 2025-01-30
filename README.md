@@ -9,10 +9,10 @@ Better to create virtual env to avoid environment variable issues on Windows.
 conda create -n feht python=3.12
 conda activate feht
 
-# get repo and to the latest-dev branch
+# get repo and to the latest-stable branch
 git clone 
 git fetch --all
-git checkout latest-dev
+git checkout latest-stable
 ```
 After that, please install pytorch first based on own conditions.
 For example:
