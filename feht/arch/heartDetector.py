@@ -312,7 +312,7 @@ class HeartDetector(BaseArch):
             ])
 
             radius = radius * np.argmax(logits, axis=1)[..., None]
-            if np.any(radius != 0):
+            if np.any(radius != 0): 
                 radius = np.sum(radius) / (2 * np.sum(np.argmax(logits, axis=1)))
                 radius = np.array([[radius, radius]]).repeat(vlength, axis=0)
 

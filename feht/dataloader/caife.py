@@ -7,6 +7,19 @@ from loguru import logger
 import os, torch, feht
 from PIL import Image
 
+class InferenceDataset(data.Dataset):
+    def __init__(self, config) -> None:
+        super().__init__()
+        self.config = config
+        self.transform = transforms.Compose([
+            transforms.Grayscale(num_output_channels=1),
+            transforms.Resize(self.config['input_shape']),
+            transforms.ToTensor(),
+            ])
+        self.__initiate()
+
+
+
 
 class CaifeDetectionDataset(data.Dataset):
     def __init__(self, config, phase) -> None:

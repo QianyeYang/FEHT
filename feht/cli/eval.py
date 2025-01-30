@@ -1,6 +1,3 @@
-'''
-TODO: avoid regenerate a new log when call test.py
-'''
 import argparse, importlib, os
 import feht.utils.io as uio 
 from loguru import logger
