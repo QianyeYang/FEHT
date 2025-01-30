@@ -5,17 +5,17 @@ import argparse, importlib, os
 import feht.utils.io as uio 
 from loguru import logger
 
-parser = argparse.ArgumentParser("Higest level configuration settings")
-parser.add_argument("-g", "--gpu", default=0, type=int, help="assign gpu device", required=False)
-parser.add_argument("-p", "--path", type=str, help="path to the experiment folder", required=True)
-parser.add_argument("-b", "--batch_size", default=1, type=int, help="batch size", required=False)
-parser.add_argument("-c", "--checkpoint", default='latest' ,type=str, help="specify the checkpoint number", required=False)
-parser.add_argument("-v", "--validation", action='store_true', help="validate the model", required=False)
-parser.add_argument("-e", "--entry", default='', help="fexibly call a function in the arch", required=False)
-args = parser.parse_args()
 
+def main():
+    parser = argparse.ArgumentParser("Higest level configuration settings")
+    parser.add_argument("-g", "--gpu", default=0, type=int, help="assign gpu device", required=False)
+    parser.add_argument("-p", "--path", type=str, help="path to the experiment folder", required=True)
+    parser.add_argument("-b", "--batch_size", default=1, type=int, help="batch size", required=False)
+    parser.add_argument("-c", "--checkpoint", default='latest' ,type=str, help="specify the checkpoint number", required=False)
+    parser.add_argument("-v", "--validation", action='store_true', help="validate the model", required=False)
+    parser.add_argument("-e", "--entry", default='', help="fexibly call a function in the arch", required=False)
+    args = parser.parse_args()
 
-if __name__ == '__main__':
     config = uio.load_yaml(
         os.path.join(args.path, 'config.yaml')
     )
@@ -30,7 +30,7 @@ if __name__ == '__main__':
         config['batch_size'] = args.batch_size
 
     arch_module, arch_attr = config['arch']
-    arch_module = f"src.arch.{arch_module}"
+    arch_module = f"feht.arch.{arch_module}"
     Arch = getattr(
         importlib.import_module(arch_module), 
         arch_attr
@@ -47,4 +47,3 @@ if __name__ == '__main__':
         getattr(arch, args.entry)()
     else:
         arch.inference()
-    

@@ -4,7 +4,7 @@ arch: !!seq
   - !!str "HeartDetector"
 lr: !!float 1e-4
 lr_scheduler: !!str "linear"
-batch_size: !!int 32
+batch_size: !!int 16
 num_epochs: !!int 400
 num_cpus: !!int 4
 gpu_ids: !!seq

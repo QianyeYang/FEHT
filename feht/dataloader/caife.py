@@ -5,6 +5,7 @@ from torchvision import transforms
 import torch.utils.data as data
 from loguru import logger
 import os, torch, feht
+from PIL import Image
 
 
 class CaifeDetectionDataset(data.Dataset):

@@ -3,13 +3,12 @@ import feht.utils.io as uio
 from loguru import logger
 
 
-parser = argparse.ArgumentParser("Higest level configuration settings")
-parser.add_argument("-c", "--config", type=str, help="configuration path", required=True)
-parser.add_argument("-g", "--gpu_override", help="GPU override", required=False)
-args = parser.parse_args()
+def main():
 
-
-if __name__ == '__main__':
+    parser = argparse.ArgumentParser("Higest level configuration settings")
+    parser.add_argument("-c", "--config", type=str, help="configuration path", required=True)
+    parser.add_argument("-g", "--gpu_override", help="GPU override", required=False)
+    args = parser.parse_args()
 
     exp_name, _ = os.path.splitext(os.path.basename(args.config))
 

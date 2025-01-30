@@ -166,3 +166,4 @@ cython_debug/
 .DS_Store
 logs/*
 !logs/README.md
+train-meta-example-full.pkl

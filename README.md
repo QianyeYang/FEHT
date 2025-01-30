@@ -19,14 +19,26 @@ For example:
 ```
 pip3 install torch torchvision torchaudio
 ```
-
-
-# install as editable way
+Then install this tool as editable way
 ```
 pip install -e .
 ```
 
 ## Dataset and Folder structures
+The tool requires an index file for data sampling in training/inference. Example could be found in ``data/train-meta-example.pkl``. The structure of the index is basically a dictionary as follows:
+```
+{
+    "train":[
+        "suid": "scan unique id",
+        "puid": "patient unique id",
+        "annotation data": [...],  # bounding box data
+        "data_path": [...],  # the RELATIVE path under data_root in the below mentioned config file.  
+    ],
+    "val": [...],  # same structure as above
+    "test": [...],  # same structure as above
+}
+```
+For training, a configuration file is needed, examples can be found in ``scripts/heartDetection/g6_112_L2.yaml``
 
 
 ## Annotation Tool
@@ -40,13 +52,44 @@ feht-train -c /path/to/the/configuration/file
 ```
 For example:
 ```
-feht-train -c ./scripts/heartDetection/g6_112_L2.yaml
+feht-train -c ./scripts/heartDetection/g6_112_L2.yaml -g [GPU ID]
 ```
-After start training, 
+After start training, the log and checkpoints will be placed in ``logs`` folder
 
+## Evaluation
+Simply use the following command line for doing inference (by default, on the latest saved model):
+```
+feht-eval -p ./logs/g6_112_L2/ -g [GPU ID]
+```
+OR on the best saved model:
+```
+feht-eval -p ./logs/g6_112_L2/ -c best -g [GPU ID]
+```
+OR pick on of the saved model:
+```
+feht-eval -p ./logs/g6_112_L2/ -c [epoch number] -g [GPU ID]
+```
 
-## Pretrained Model
-If you would like to directly use our pretrained model for inference，please manually download from here and put it in ``here``
+## Pretrained Model 
+If you would like to directly use our pretrained model for inference，please manually download from [HERE](https://drive.google.com/file/d/1cBBbQKAeQTZ5Iz9xUgajHMWZWGZXC91U/view?usp=sharing) and put it under ``feht/weights``
 
-## Inference
+In addition, if you would like to integrate your own train model in to this tool, you can move your picked model from ``log/[your_experiment_name]/checkpoints/[your_select_model].pt`` to ``feht/weights`` as well. Better rename it to a new name for better recognition. Please check next section for more details
+
+## Integrated Inference
+The tool supports multiple ways for doing inference, depends on the usage of this tool:
+* Inference via an index file (CSV):
+```
+```
+* Inference via a folder path:
+```
+```
+* Integrate the inference in your code:
+```
+```
+## Software Update
+This tool will be regularly maintained and updated. You can always using the following command line to update the software:
+```
+feht-update
+```
+
 

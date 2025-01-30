@@ -42,6 +42,6 @@ bug-reports = "https://github.com/xxxx/issues"
 source = "https://github.com/xxxx/issues"
 
 [project.scripts]
-feht-update = "feht.cli.updateSoftware:main"
-feht-train = "feht.cli.updateSoftware:main"
-feht-inference = "feht.cli.updateSoftware:main"
+feht-update = "feht.cli.update:main"
+feht-train = "feht.cli.train:main"
+feht-eval = "feht.cli.eval:main"
