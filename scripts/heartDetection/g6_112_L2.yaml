@@ -5,14 +5,14 @@ arch: !!seq
 lr: !!float 1e-4
 lr_scheduler: !!str "linear"
 batch_size: !!int 32
-num_epochs: !!int 2000
+num_epochs: !!int 400
 num_cpus: !!int 4
 gpu_ids: !!seq
-  - !!int 1
-save_frequency: !!int 100
-val_warmup: !!int 400
-bbox_index_path: "./data/detection_meta.pkl"
-data_root: !!str "../DataSets/COCHE_site12_Bmode_videos"
+  - !!int 0
+save_frequency: !!int 50
+val_warmup: !!int 0
+bbox_index_path: "./data/train-meta-example.pkl"
+data_root: !!str "/home/engs2732/projects/DataSets/COCHE_site12_Bmode_videos"
 overwrite: !!bool False
 
 # Continue training proposes

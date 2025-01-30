@@ -1,19 +1,18 @@
-import torch, os, veronica, cv2
+import torch, os, cv2, feht
 import torch.nn as nn
 import numpy as np
 
 from scipy.ndimage import gaussian_filter1d
 from icecream import ic
 from torch.utils.data import DataLoader
-from src.arch.baseArch import BaseArch
-from src.dataloader.caife import CaifeDetectionDataset
+from feht.arch.baseArch import BaseArch
+from feht.dataloader.caife import CaifeDetectionDataset
 from tqdm import tqdm
-from veronica.model.video import R3D18_WEFLP, R2D18_WEFLP
-from veronica.metric.classification import accuracy
-from veronica.metric.detection import IoU
+from feht.model.video import R3D18_WEFLP, R2D18_WEFLP
+from feht.metric.classification import accuracy
+from feht.metric.detection import IoU
 
-from veronica.plot.confusionMatrix import plot_confusion_matrix
-from veronica import current_time
+from feht.plot.confusionMatrix import plot_confusion_matrix
 from torchmetrics.detection.mean_ap import MeanAveragePrecision
 import matplotlib.pyplot as plt
 from moviepy.editor import ImageSequenceClip
@@ -342,10 +341,10 @@ class HeartDetector(BaseArch):
             results_collection[input_dict['suid'][0]] = final_results
             sample_save_path = os.path.join(self.res_dir, 'ext_anomalies_pred', f'{input_dict["suid"][0]}.pkl')
             os.makedirs(os.path.dirname(sample_save_path), exist_ok=True)
-            veronica.save_pkl(final_results, sample_save_path, overwrite=True)
+            feht.save_pkl(final_results, sample_save_path, overwrite=True)
 
         # check if it is able to save as a pickle
-        veronica.save_pkl(
+        feht.save_pkl(
             results_collection, 
             os.path.join(self.res_dir, 'ext_anomalies_pred', f'ext_prediction_on_anomaly_data.pkl'),
             overwrite=True
@@ -494,7 +493,7 @@ class HeartDetector(BaseArch):
         self.logger.info(f"mse_radius: {mse_radius:.3f} +/- {std_radius:.3f}")
         self.logger.info(f"IoU: {ious:.3f} +/- {std_ious:.3f}")
         
-        veronica.save_pkl(
+        feht.save_pkl(
             results_collection,
             os.path.join(self.res_dir, f'results.pkl'),
             overwrite=True
@@ -526,22 +525,6 @@ class HeartDetector(BaseArch):
         ap_70.update(ap_calc_predictions, ap_calc_ground_truth)
         self.logger.info(">>> mAP@70")
         self.logger.info(ap_70.compute())
-
-        
-    #     self.logger.info(">>> Saving the predictions")
-    #     results = []
-    #     for i in range(len(image_paths)):
-    #         sample_results = {
-    #             'image_path': image_paths[i],
-    #             'prediction': str(all_prediction[i]), ###
-    #             'ground_truth': str(all_ground_truth[i])
-    #         }
-    #         results.append(sample_results)
-    #     veronica.save_json(
-    #         data = results, 
-    #         path = os.path.join(self.res_dir, f'predictions_{self.exp_name}.json'),
-    #         overwrite=True
-    #         )
         
         self.logger.info(">>> Saving the visualisation")
         # ic(len(np.unique(all_ground_truth)))

@@ -22,6 +22,7 @@ pip3 install torch torchvision torchaudio
 
 
 # install as editable way
+```
 pip install -e .
 ```
 

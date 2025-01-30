@@ -6,9 +6,9 @@ from icecream import ic
 
 from abc import ABC, abstractmethod
 from typing import Any
-import src.utils.io as uio
-from src.utils.time import current_time
-from src import utils
+import feht.utils.io as uio
+from feht.utils.time import current_time
+from feht import utils
 
 from torch.optim.lr_scheduler import StepLR, LinearLR
 import torch.distributed as dist

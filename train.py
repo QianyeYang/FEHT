@@ -1,5 +1,5 @@
 import argparse, importlib, os
-import src.utils.io as uio 
+import feht.utils.io as uio 
 from loguru import logger
 
 
@@ -31,7 +31,7 @@ if __name__ == '__main__':
         
         
     arch_module, arch_attr = config['arch']
-    arch_module = f"src.arch.{arch_module}"
+    arch_module = f"feht.arch.{arch_module}"
     Arch = getattr(
         importlib.import_module(arch_module), 
         arch_attr

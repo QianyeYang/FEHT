@@ -2,7 +2,7 @@
 TODO: avoid regenerate a new log when call test.py
 '''
 import argparse, importlib, os
-import src.utils.io as uio 
+import feht.utils.io as uio 
 from loguru import logger
 
 parser = argparse.ArgumentParser("Higest level configuration settings")
