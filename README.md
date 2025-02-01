@@ -77,8 +77,9 @@ In addition, if you would like to integrate your own train model in to this tool
 
 ## Integrated Inference
 The tool supports multiple ways for doing inference, depends on the usage of this tool:
-* Inference via an index file (CSV):
+* Inference via an index file (CSV): Please check the [CSV example](data/inference_index_example.csv) in ``data/inference_index_example.csv``. After the prediction, you can check [this example](feht/examples/how_to_use_the_bbox_prediction.ipynb) for how to use the predicted bounding boxes in your own dataloader.
 ```
+feht-inference --csv data/inference_index_example.csv --model feht-l2-pretrained --output path/to/your/folder --gpu 0
 ```
 * Integrate the inference in your code: Please check the example in [here](feht/examples/model_instance.ipynb).
 

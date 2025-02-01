@@ -7,16 +7,61 @@ from loguru import logger
 import os, torch, feht
 from PIL import Image
 
-class InferenceDataset(data.Dataset):
-    def __init__(self, config) -> None:
+
+class CSVInferenceDataset(data.Dataset):
+    def __init__(self, csv_index:str="") -> None:
         super().__init__()
-        self.config = config
+        self.csv_index = csv_index
+        self.__parse_csv_index()
+
         self.transform = transforms.Compose([
             transforms.Grayscale(num_output_channels=1),
-            transforms.Resize(self.config['input_shape']),
+            transforms.Resize((112, 112)),
             transforms.ToTensor(),
             ])
-        self.__initiate()
+    
+
+    def __parse_csv_index(self) -> None:
+        assert os.path.exists(self.csv_index), f"csv index file {self.csv_index} not found"
+        assert self.csv_index.endswith('.csv'), "csv index file should be a csv file"
+        
+        logger.info(f">>> Loading csv index from {self.csv_index}, might take for a while...")
+        self.df = pd.read_csv(self.csv_index)
+        self.scans = self.df['suid'].unique().tolist()
+
+
+    def __getitem__(self, index: int) -> dict:
+        suid = self.scans[index]
+        frame_paths = self.df[self.df['suid'] == suid]['frame_path'].tolist()
+        video = self.__load_image(frame_paths)
+        video_length = video.shape[0]
+
+        height = self.df[self.df['suid'] == suid]['height'].iloc[0]
+        width = self.df[self.df['suid'] == suid]['width'].iloc[0]
+        puid = self.df[self.df['suid'] == suid]['puid'].iloc[0]
+
+        return {
+            "video": video.unsqueeze(0),
+            "suid": self.scans[index],
+            "puid": puid,
+            "video_length": video_length,
+            "ori_video_length": len(frame_paths),
+            "shape": (height, width)
+        }
+
+
+    def __load_image(self, paths: list[str]) -> torch.Tensor:
+        images = []
+        for path in paths:
+            frame_path = os.path.join(path)
+            images.append(self.transform(Image.open(frame_path)))
+        return torch.cat(images, dim=0)
+
+
+    def __len__(self) -> int:
+        return len(self.scans)
+        
+        
 
 
 

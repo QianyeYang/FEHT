@@ -16,7 +16,6 @@ def Model(name: str = 'feht-l2-pretrained'):
 
     assert os.path.isfile(model_path), \
         f"Model {name} not found! Please check if you placed it under feht/weights folder."
-    
         
     model = R3D18_WEFLP(num_out=6)
     state_dict = uio.load_checkpoint(model_path, map_location=torch.device('cpu'))
@@ -24,6 +23,13 @@ def Model(name: str = 'feht-l2-pretrained'):
     model.eval()
 
     return model
+
+
+def get_clip_length_from_model(name: str = 'feht-l2-pretrained') -> int:
+    if name == 'feht-l2-pretrained':
+        return 64
+    else:
+        raise NotImplementedError(f"Model {name} is not implemented yet.")
         
         
 def save_json(
