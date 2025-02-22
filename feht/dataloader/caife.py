@@ -2,10 +2,58 @@ import pandas as pd
 import numpy as np
 from random import randint
 from torchvision import transforms
+import torchvision.io as tvio
 import torch.utils.data as data
 from loguru import logger
 import os, torch, feht
 from PIL import Image
+from icecream import ic
+
+
+class VideoInferenceDataset(data.Dataset):
+    def __init__(self, video_path:str="") -> None:
+        super().__init__()
+
+        self.transform = transforms.Compose([
+            transforms.ToPILImage(),
+            transforms.Grayscale(num_output_channels=1),
+            transforms.Resize((112, 112)),
+            transforms.ToTensor(),
+            ])
+
+        if video_path.endswith(".txt"):
+            assert os.path.exists(video_path), f"video index file {video_path} not found"
+            assert video_path.endswith('.txt'), "video index file should be a txt file"
+            self.video_paths = feht.load_txt(video_path)
+        else:
+            self.video_paths = [video_path]
+
+
+    def __getitem__(self, index: int) -> dict:
+        video_path = self.video_paths[index].strip()
+        video, (height, width)= self.__read_video(video_path)
+        frame_num = video.shape[0]
+
+        return {
+            "video": video.unsqueeze(0),
+            "suid": os.path.basename(video_path),
+            "puid": os.path.basename(video_path),
+            "video_length": frame_num,
+            "ori_video_length": frame_num,
+            "shape": (height, width)
+        }
+        
+
+    def __read_video(self, video_path: str) -> torch.Tensor:
+        video, _, _ = tvio.read_video(video_path)
+        video = video.permute(0, 3, 1, 2)
+        _, _, height, width = video.shape
+        video = [self.transform(i) for i in video]
+        return torch.cat(video, dim=0), (height, width)
+
+        
+    def __len__(self) -> int:
+        return len(self.video_paths)
 
 
 class CSVInferenceDataset(data.Dataset):
@@ -62,10 +110,7 @@ class CSVInferenceDataset(data.Dataset):
         return len(self.scans)
         
         
-
-
-
-
+        
 class CaifeDetectionDataset(data.Dataset):
     def __init__(self, config, phase) -> None:
         assert phase in ['train', 'val', 'test', 'anomaly'], "phase should be one of train/val/test"

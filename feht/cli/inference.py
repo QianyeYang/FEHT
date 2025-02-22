@@ -1,10 +1,11 @@
 import argparse, os, feht, torch
 import numpy as np
+from icecream import ic
 from tqdm import tqdm
 from loguru import logger
 from scipy.ndimage import gaussian_filter1d
 from feht.utils.time import current_time
-from feht.dataloader.caife import CSVInferenceDataset
+from feht.dataloader.caife import CSVInferenceDataset, VideoInferenceDataset
 from torch.utils.data import DataLoader
 
 
@@ -12,7 +13,9 @@ def main():
     parser = argparse.ArgumentParser("Higest level configuration settings")
     parser.add_argument("-g", "--gpu", default=0, type=int, help="assign gpu device", required=False)
     parser.add_argument("-m", "--model", type=str, default='feht-l2-pretrained', help="name of the model need to use", required=False)
-    parser.add_argument("-c", "--csv", default='', help="csv index for ", required=True)
+    parser.add_argument("-c", "--csv", default='', help="csv index for ", required=False)
+    parser.add_argument("-v", "--video", default='', help="path to a video", required=False)
+    # parser.add_argument("-v", "--video", default='', help="path to a video", required=False)
     parser.add_argument("-o", "--output", default='', help="output path", required=False)
     args = parser.parse_args()
 
@@ -20,11 +23,30 @@ def main():
     results_collection = {}
     all_prediction_logits = []
 
-    # sanity checks
-    assert os.path.isfile(args.csv), \
-        f"CSV file {args.csv} not found! Please check the file."
-    assert args.csv.endswith('.csv'), \
-        f"CSV file {args.csv} is not in csv format! Please check the file."
+    # sanity checks for the inputs
+    if args.csv != '':
+        assert os.path.isfile(args.csv), \
+            f"CSV file {args.csv} not found! Please check the file."
+        assert args.csv.endswith('.csv'), \
+            f"CSV file {args.csv} is not in csv format! Please check the file."
+        test_loader = DataLoader(
+            dataset=CSVInferenceDataset(csv_index=args.csv),
+            batch_size=1,
+            num_workers=0,
+            shuffle=False,
+            )
+    elif args.video != '':
+        assert os.path.isfile(args.video), \
+            f"Video file {args.video} not found! Please check the file."
+        test_loader = DataLoader(
+            dataset=VideoInferenceDataset(video_path=args.video),
+            batch_size=1,
+            num_workers=0,
+            shuffle=False,
+            )
+    else:
+        raise ValueError("Please provide either a csv file or a video file for inference.")
+    
     
     if args.output == '':
         args.output = "./temp_output" + current_time()
@@ -39,13 +61,6 @@ def main():
     model = feht.Model(name=args.model)
     model = model.to(device)
 
-    # set dataloader
-    test_loader = DataLoader(
-        dataset=CSVInferenceDataset(csv_index=args.csv),
-        batch_size=1,
-        num_workers=0,
-        shuffle=False,
-        )
     
     for iteration, input_dict in enumerate(test_loader):
             
@@ -122,6 +137,7 @@ def main():
             'center': centers,
             'puid': input_dict['puid'],
             'suid': input_dict['suid'],
+            'video_shape': [t.item() for t in input_dict['shape']],
         }
         results_collection[input_dict['suid'][0]] = final_results
         sample_save_path = os.path.join(args.output, f'{input_dict["suid"][0]}.pkl')
