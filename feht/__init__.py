@@ -201,3 +201,26 @@ def load_yaml(
         data = yaml.load(file, Loader=yaml.FullLoader)
 
     return data
+
+
+def save_txt(
+        data: str,
+        path: str,
+        ) -> None:
+    '''
+    Save the data as txt file.
+    '''
+    with open(path, 'w') as file:
+        file.write(data)
+
+
+
+def load_txt(
+        path: str,
+        ) -> str:
+    '''
+    Load the data from txt file.
+    '''
+    with open(path, 'r') as file:
+        data = file.readlines()
+    return data

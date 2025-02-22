@@ -81,6 +81,14 @@ The tool supports multiple ways for doing inference, depends on the usage of thi
 ```
 feht-inference --csv data/inference_index_example.csv --model feht-l2-pretrained --output path/to/your/folder --gpu 0
 ```
+
+* Inference via a mp4 video or a txt file with paths of the videos:
+```
+feht-inference -v /path/to/your/video.mp4
+#OR
+feht-inference -v ./data/video_list_example.txt
+```
+
 * Integrate the inference in your code: Please check the example in [here](feht/examples/model_instance.ipynb).
 
 ## Software Update
