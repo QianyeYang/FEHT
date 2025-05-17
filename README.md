@@ -1,5 +1,7 @@
 # Overveiw
-The offical source code for paper - ``A Deep Learning Framework for Fetal Heart Tracking in Ultrasound Videos: Toward Enhanced CHD Detection''
+The offical source code for paper - ``A Deep Learning Framework for Fetal Heart Tracking in Ultrasound Videos: Toward Enhanced Congenital Heart Defects Detection``
+
+The paper is officially accepted by the conference of FIMH 2025 (Functional Imaging and Modeling of the Heart). Paper will be released soon!
 
 
 ## Environment Setup
