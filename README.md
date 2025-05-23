@@ -44,7 +44,7 @@ For training, a configuration file is needed, examples can be found in ``scripts
 
 
 ## Annotation Tool
-Please visit https://anonymous.4open.science/r/abcdC3D5 to access our customized US video annotation tool.
+Please visit [here](https://github.com/QianyeYang/ViNo-rls) to access our customized US video annotation tool.
 
 ## Training
 After data is prepared, the following command can be used for training a heart tracking model:
